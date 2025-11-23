@@ -1,0 +1,18 @@
+I set up a full GitOps workflow using ArgoCD and Kubernetes.
+Basically, the idea is that Git controls everything, not me.
+
+I first created a K3s Kubernetes cluster on my EC2 and installed ArgoCD on it.
+Then I pushed all my Kubernetes YAML files (namespace, deployment, service) into a GitHub repo.
+
+After that, I connected ArgoCD to the repo.
+So now ArgoCD keeps watching my GitHub repository 24/7.
+
+Whenever I change anything in Git like I changed replicas from 2 to 3 —
+ArgoCD immediately sees that change, marks the app as “OutOfSync,”
+and automatically updates the cluster to match whatever is in Git.
+
+So the flow is:
+
+I push a change → ArgoCD detects it → ArgoCD applies it to Kubernetes → Cluster updates automatically.
+
+I don’t manually run kubectl apply.
